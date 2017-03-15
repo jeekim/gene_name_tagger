@@ -1,6 +1,18 @@
-from nltk.tokenize import WordPunctTokenizer
+import sys
+import os
 
-gold = open('data/protein-train.ann')
+# sys.path.append('/home/jee/Projects/gene_name_tagger/lib/python/features')
+# print(sys.path)
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+from nltk.tokenize import WordPunctTokenizer
+from lib.python import features
+
+# import lib.python.features
+
+
+fb = features.FeatureBuilder()
+gold = open('/home/jee/Projects/gene_name_tagger/data/protein-train.ann')
 
 # build a dictionary for annotations
 d = {}
@@ -9,7 +21,7 @@ for l in gold.readlines():
     d[k] = int(v) - int(k)
 
 #
-f = open('data/protein-train.txt')
+f = open('/home/jee/Projects/gene_name_tagger/data/protein-train.txt')
 
 lines = f.readlines()
 a = "".join(lines)
@@ -19,14 +31,14 @@ t = list(it)
 gene_end = 0
 for span in t:
     s, e = span  # span
+    tok = a[s:e]
     if d.get(str(s)):
         gene_end = s + int(d.get(str(s)))
-        print(a[s:e], "GENE")
+        print(fb.generate(tok), "GENE")
     elif e <= gene_end:
-        print(a[s:e], "GENE")
+        print(fb.generate(tok), "GENE")
     else:
-        if a[s:e] is ".":
-            print(a[s:e], "O", "\n")
+        if tok is ".":
+            print(tok, "O", "\n")
         else:
-            print(a[s:e], "O")
-
+            print(fb.generate(tok), "O")
