@@ -7,7 +7,8 @@ train := {
 lazy val trainGene = taskKey[Unit]("Prints 'training gene tagger ...'")
 
 trainGene := {
-  "java -cp lib/mallet.jar:lib/mallet-deps.jar cc.mallet.fst.SimpleTagger --train true --test lab --threads 2 data/gene.txt" !
+  "java -cp lib/mallet.jar:lib/mallet-deps.jar cc.mallet.fst.SimpleTagger --train true --test perclass --threads 2 data/gene.txt" !
+  // "java -cp lib/mallet.jar:lib/mallet-deps.jar cc.mallet.fst.SimpleTagger --train true --test lab --threads 2 data/gene_v2.txt" !
 }
 
 lazy val generateGene = taskKey[Unit]("Prints 'generating a gene tagger model ...'")
