@@ -31,9 +31,9 @@ class CorpusBuilder:
             tok = a[s:e]
             if d.get(str(s)):
                 gene_end = s + int(d.get(str(s)))
-                print(self.fb.generate(tok), "GENE")
+                print(self.fb.generate(tok), "BGENE")
             elif e <= gene_end:
-                print(self.fb.generate(tok), "GENE")
+                print(self.fb.generate(tok), "IGENE")
             else:
                 if tok is ".":
                     print(tok, "O", "\n")
