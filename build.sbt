@@ -1,24 +1,27 @@
-lazy val trainGene = taskKey[Unit]("Prints 'training gene tagger ...'")
+lazy val train = taskKey[Unit]("Prints 'training gene tagger ...'")
 
-trainGene := {
-  "java -cp lib/mallet.jar:lib/mallet-deps.jar cc.mallet.fst.SimpleTagger --train true --test perclass --threads 2 data/gene_v3.txt" !
+train := {
+  "java -cp lib/mallet.jar:lib/mallet-deps.jar cc.mallet.fst.SimpleTagger --train true --test perclass --iterations 1000 --threads 2 data/gene_v4.txt" !
+  // "java -cp lib/mallet.jar:lib/mallet-deps.jar cc.mallet.fst.SimpleTagger --train true --test perclass --orders 2 --iterations 1000 --threads 2 data/gene_v4.txt" !
+  // "java -cp lib/mallet.jar:lib/mallet-deps.jar cc.mallet.fst.SimpleTagger --train true --test perclass --threads 2 data/gene_v3.txt" !
   // "java -cp lib/mallet.jar:lib/mallet-deps.jar cc.mallet.fst.SimpleTagger --train true --test lab --threads 2 data/gene_v2.txt" !
 }
 
-lazy val generateGene = taskKey[Unit]("Prints 'generating a gene tagger model ...'")
+lazy val generate = taskKey[Unit]("Prints 'generating a gene tagger model ...'")
 
-generateGene := {
-  "java -cp lib/mallet.jar:lib/mallet-deps.jar cc.mallet.fst.SimpleTagger --train true --model-file model/genecrf data/gene_v2.txt" !
+generate := {
+  "java -cp lib/mallet.jar:lib/mallet-deps.jar cc.mallet.fst.SimpleTagger --train true --model-file model/genecrf_v4 data/gene_v4.txt" !
+  // "java -cp lib/mallet.jar:lib/mallet-deps.jar cc.mallet.fst.SimpleTagger --train true --model-file model/genecrf data/gene_v2.txt" !
 }
 
-lazy val annotateGene = taskKey[Unit]("Prints 'annotating genes ...'")
+lazy val annotate = taskKey[Unit]("Prints 'annotating genes ...'")
 
-annotateGene := {
-  "java -cp lib/mallet.jar:lib/mallet-deps.jar cc.mallet.fst.SimpleTagger --model-file model/genecrf --include-input true data/gene_v2_test.txt" !
+annotate := {
+  "java -cp lib/mallet.jar:lib/mallet-deps.jar cc.mallet.fst.SimpleTagger --model-file model/genecrf_v4 --include-input true data/gene_v4_test.txt" !
+  // "java -cp lib/mallet.jar:lib/mallet-deps.jar cc.mallet.fst.SimpleTagger --model-file model/genecrf --include-input true data/gene_v2_test.txt" !
 }
 
-lazy val train = taskKey[Unit]("Prints 'training ...'")
-
-train := {
-  "java -cp lib/mallet.jar:lib/mallet-deps.jar cc.mallet.fst.SimpleTagger --train true --test lab --threads 2 data/ner2.txt" !
-}
+// lazy val train = taskKey[Unit]("Prints 'training ...'")
+// train := {
+//  "java -cp lib/mallet.jar:lib/mallet-deps.jar cc.mallet.fst.SimpleTagger --train true --test lab --threads 2 data/ner2.txt" !
+// }

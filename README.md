@@ -1,5 +1,9 @@
 # gene_name_tagger
 
+### Task and How to Approach?
+
+### What is CRF and why use it?
+
 
 ### how to improve
 
@@ -31,6 +35,23 @@ Testing label O P 0.961 R 0.991 F1 0.9758
 Macro-average (including non-used labels) P 0.9201 R 0.8052 F 0.8512
 Macro-average (excluding non-used labels) P 0.9201 R 0.8052 F 0.8512
 ```
+
+- v4: number
+```
+Evaluator iteration=500 cost=NA (not Optimizable.ByValue)
+Per-token results for Training
+Training label O P 0.9613 R 0.9927 F1 0.9767
+Training label GENE P 0.9019 R 0.6272 F1 0.7398
+Macro-average (including non-used labels) P 0.9316 R 0.8099 F 0.8583
+Macro-average (excluding non-used labels) P 0.9316 R 0.8099 F 0.8583
+Per-token results for Testing
+Testing label O P 0.962 R 0.9917 F1 0.9766
+Testing label GENE P 0.8887 R 0.6292 F1 0.7368
+Macro-average (including non-used labels) P 0.9254 R 0.8104 F 0.8567
+Macro-average (excluding non-used labels) P 0.9254 R 0.8104 F 0.8567
+```
+
+
 - v3: BIO
 ```
 Evaluator iteration=500 cost=NA (not Optimizable.ByValue)
@@ -60,9 +81,46 @@ java -cp "lib/mallet.jar:lib/mallet-deps.jar" cc.mallet.fst.SimpleTagger --train
 
 ### results
 
+
+##### BO
+
+|             |        | train  |        |        | test   |        |
+|-------------|--------|--------|--------|--------|--------|--------|
+|             | P      | R      | F      | P      | R      | F      |
+| base        | 0.8925 | 0.6168 | 0.7295 | 0.8804 | 0.6141 | 0.7235 |
+| stem        | 0.8929 | 0.6219 | 0.7331 | 0.8791 | 0.6193 | 0.7267 |
+| stem + num  | 0.9019 | 0.6272 | 0.7398 | 0.8887 | 0.6292 | 0.7368 |
+| stem + num 2| 0.8968 | 0.5456 | 0.6785 | 0.8886 | 0.5511 | 0.6803 |
+
+
+##### number of iterations  (stem + num) learning curve?
+
 |      |        | train  |        |        | test   |        |
 |------|--------|--------|--------|--------|--------|--------|
 |      | P      | R      | F      | P      | R      | F      |
-| base | 0.8925 | 0.6168 | 0.7295 | 0.8804 | 0.6141 | 0.7235 |
-| stem | 0.8929 | 0.6219 | 0.7331 | 0.8791 | 0.6193 | 0.7267 |
-| bio  |        |        |        |        |        |        |
+| 500  | 0.9019 | 0.6272 | 0.7398 | 0.8887 | 0.6292 | 0.7368 |
+| 1000 | 0.9157 | 0.7224 | 0.8076 | 0.8971 | 0.7137 | 0.7950?|
+| 2000 | 0.9159 | 0.7442 | 0.8211 | 0.8973 | 0.7308 | 0.8055 |
+| 3000 | 0.9159 | 0.7442 | 0.8211 | 0.8973 | 0.7308 | 0.8055 |
+
+- 3000
+real	17m22.422s
+user	27m30.456s
+sys	0m18.440s
+
+##### BIO
+
+### Discussion
+
+- Use word2vec or glove to improve recall?
+- Does it work on full-text articles?
+- How to adapt to chemical names?
+- continuous learning?
+- cross-validation for more reliable evaluation?
+- visualization?
+- three letter ...
+- three letter ...
+
+### References and Resources
+- Mallet: http://mallet.cs.umass.edu/
+- NLTK 3.0: http://www.nltk.org/

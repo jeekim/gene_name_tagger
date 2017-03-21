@@ -22,18 +22,18 @@ class CorpusBuilder:
 
         f = open('/home/jee/Projects/gene_name_tagger/data/protein-train.txt')
         lines = f.readlines()
-        a = "".join(lines)
-        spans = WordPunctTokenizer().span_tokenize(a)
+        corpus = "".join(lines)
+        spans = WordPunctTokenizer().span_tokenize(corpus)
 
         gene_end = 0
         for span in spans:
             s, e = span  # span
-            tok = a[s:e]
+            tok = corpus[s:e]
             if d.get(str(s)):
                 gene_end = s + int(d.get(str(s)))
-                print(self.fb.generate(tok), "BGENE")
+                print(self.fb.generate(tok), "GENE")  # TODO: tokens?
             elif e <= gene_end:
-                print(self.fb.generate(tok), "IGENE")
+                print(self.fb.generate(tok), "GENE")
             else:
                 if tok is ".":
                     print(tok, "O", "\n")
@@ -44,15 +44,14 @@ class CorpusBuilder:
         f = open('data/protein-test.txt')
 
         lines = f.readlines()
-        a = "".join(lines)
-        spans = WordPunctTokenizer().span_tokenize(a)
+        corpus = "".join(lines)
+        spans = WordPunctTokenizer().span_tokenize(corpus)
         # spans = list(it)
-
-        gene_end = 0
+        # gene_end = 0
         for span in spans:
             s, e = span  # span
-            tok = a[s:e]
-            if a[s:e] is ".":
+            tok = corpus[s:e]
+            if tok is ".":
                 print(tok, "\n")
             else:
                 print(self.fb.generate(tok))
