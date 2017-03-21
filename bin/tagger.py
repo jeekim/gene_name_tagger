@@ -21,3 +21,5 @@ if __name__ == "__main__":
         token = o.decode("utf-8").rstrip('\n').strip(' ')
         if token.startswith("GENE"):
             print(token)
+        else:
+            print(token)
