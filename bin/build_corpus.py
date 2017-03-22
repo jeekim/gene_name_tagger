@@ -56,8 +56,10 @@ class CorpusBuilder:
             else:
                 print(self.fb.generate(tok))
 
-    def testing_with_offset(self):
-        pass
+
+
+    #def testing_with_offset(self):
+    #   pass
 
 def main():
     if not len(sys.argv) == 2:
