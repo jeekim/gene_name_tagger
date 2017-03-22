@@ -3,6 +3,9 @@ from nltk.stem import RegexpStemmer
 
 
 class FeatureBuilder:
+    """
+    A class to generate features.
+    """
     def __init__(self):
         self.st = RegexpStemmer('s$', min=4)
 

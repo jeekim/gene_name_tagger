@@ -1,99 +1,67 @@
-# gene_name_tagger
+# Protein Name Recognition
 
-### Task and How to Approach?
+### Task and approach
+Finding protein names in sentences is a sequence tagging problem in which
+previous tagging results affect following words. Conditional Random Fields
+(CRF) algorithm is known to perform several problems such as named entity
+recognition, POS tagging, etc. []. In this task, I have 
 
-### What is CRF and why use it?
+### Problem representation
 
+##### Tokenization
 
-### how to improve
+##### Features
+In machine learning, selecting features is one of the most important steps
+in developing classifiers. For this task, I selected simple features:
+word, stem
 
-- v1: baseline
+#####
 ```
-Evaluator iteration=500 cost=NA (not Optimizable.ByValue)
-Per-token results for Training
-Training label O P 0.9602 R 0.992 F1 0.9759
-Training label GENE P 0.8925 R 0.6168 F1 0.7295
-Macro-average (including non-used labels) P 0.9263 R 0.8044 F 0.8527
-Macro-average (excluding non-used labels) P 0.9263 R 0.8044 F 0.8527
-Per-token results for Testing
-Testing label O P 0.9605 R 0.9912 F1 0.9756
-* Testing label GENE P 0.8804 R 0.6141 F1 0.7235
-Macro-average (including non-used labels) P 0.9205 R 0.8026 F 0.8496
-Macro-average (excluding non-used labels) P 0.9205 R 0.8026 F 0.8496
-```
-- v2: stemming
-```
-Evaluator iteration=500 cost=NA (not Optimizable.ByValue)
-Per-token results for Training
-Training label O P 0.9607 R 0.992 F1 0.9761
-Training label GENE P 0.8929 R 0.6219 F1 0.7331
-Macro-average (including non-used labels) P 0.9268 R 0.8069 F 0.8546
-Macro-average (excluding non-used labels) P 0.9268 R 0.8069 F 0.8546
-Per-token results for Testing
-Testing label O P 0.961 R 0.991 F1 0.9758
-* Testing label GENE P 0.8791 R 0.6193 F1 0.7267
-Macro-average (including non-used labels) P 0.9201 R 0.8052 F 0.8512
-Macro-average (excluding non-used labels) P 0.9201 R 0.8052 F 0.8512
-```
-
-- v4: number
-```
-Evaluator iteration=500 cost=NA (not Optimizable.ByValue)
-Per-token results for Training
-Training label O P 0.9613 R 0.9927 F1 0.9767
-Training label GENE P 0.9019 R 0.6272 F1 0.7398
-Macro-average (including non-used labels) P 0.9316 R 0.8099 F 0.8583
-Macro-average (excluding non-used labels) P 0.9316 R 0.8099 F 0.8583
-Per-token results for Testing
-Testing label O P 0.962 R 0.9917 F1 0.9766
-Testing label GENE P 0.8887 R 0.6292 F1 0.7368
-Macro-average (including non-used labels) P 0.9254 R 0.8104 F 0.8567
-Macro-average (excluding non-used labels) P 0.9254 R 0.8104 F 0.8567
+Cross Cros O
+- - O
+linking linking O
+CD40 CD40 GENE
+on on O
+B B O
+cells cell O
+can can O
+lead lead O
+to to O
+homotypic homotypic O
+cell cell O
+adhesion adhesion O
+, , O
+IL IL GENE
+- - GENE
+6 6 NUMBER GENE
+production production O
+, , O
 ```
 
 
-- v3: BIO
-```
-Evaluator iteration=500 cost=NA (not Optimizable.ByValue)
-Per-token results for Training
-Training label O P 0.9616 R 0.992 F1 0.9766
-Training label BGENE P 0.9172 R 0.5377 F1 0.678
-Training label IGENE P 0.8588 R 0.7024 F1 0.7728
-Macro-average (including non-used labels) P 0.9126 R 0.744 F 0.8091
-Macro-average (excluding non-used labels) P 0.9126 R 0.744 F 0.8091
-Per-token results for Testing
-Testing label O P 0.9623 R 0.9911 F1 0.9765
-Testing label BGENE P 0.9122 R 0.5377 F1 0.6766
-Testing label IGENE P 0.8444 R 0.7036 F1 0.7676
-Macro-average (including non-used labels) P 0.9063 R 0.7442 F 0.8069
-Macro-average (excluding non-used labels) P 0.9063 R 0.7442 F 0.8069
-```
-- etc.
+##### Experimental results
 
-### how to run?
-```
-java -cp "lib/mallet.jar:lib/mallet-deps.jar" cc.mallet.fst.SimpleTagger --train true --test lab --threads 2 ner2.txt
-```
+### How to evaluate?
 
-### how to evaluate?
+- Accuracy is a popular measure. However, when classes are unbalanced,
+precision and recall are more commonly used.
 
-- accuracy vs. precision and recall
+### How to train?
 
-### results
+- I divided the provided set (protein-train.txt) into 50% for training and
+50% for testing. 10 cross-validation can be an option.
 
 
-##### BO
+##### different sets of features
 
-|             |        | train  |        |        | test   |        |
-|-------------|--------|--------|--------|--------|--------|--------|
-|             | P      | R      | F      | P      | R      | F      |
-| base        | 0.8925 | 0.6168 | 0.7295 | 0.8804 | 0.6141 | 0.7235 |
-| stem        | 0.8929 | 0.6219 | 0.7331 | 0.8791 | 0.6193 | 0.7267 |
-| stem + num  | 0.9019 | 0.6272 | 0.7398 | 0.8887 | 0.6292 | 0.7368 |
-| stem + num 2| 0.8968 | 0.5456 | 0.6785 | 0.8886 | 0.5511 | 0.6803 |
+|                       |        | train  |        |        | test   |        |
+|-----------------------|--------|--------|--------|--------|--------|--------|
+|                       | P      | R      | F      | P      | R      | F      |
+| base                  | 0.8925 | 0.6168 | 0.7295 | 0.8804 | 0.6141 | 0.7235 |
+| base + stem           | 0.8929 | 0.6219 | 0.7331 | 0.8791 | 0.6193 | 0.7267 |
+| base + stem + number  | 0.9019 | 0.6272 | 0.7398 | 0.8887 | 0.6292 | 0.7368 |
 
-
-##### number of iterations  (stem + num) learning curve?
+##### number of iterations for base + stem + number
 
 |      |        | train  |        |        | test   |        |
 |------|--------|--------|--------|--------|--------|--------|
@@ -103,12 +71,7 @@ java -cp "lib/mallet.jar:lib/mallet-deps.jar" cc.mallet.fst.SimpleTagger --train
 | 2000 | 0.9159 | 0.7442 | 0.8211 | 0.8973 | 0.7308 | 0.8055 |
 | 3000 | 0.9159 | 0.7442 | 0.8211 | 0.8973 | 0.7308 | 0.8055 |
 
-- 3000
-real	17m22.422s
-user	27m30.456s
-sys	0m18.440s
 
-##### BIO
 
 ### Discussion
 
@@ -120,6 +83,12 @@ sys	0m18.440s
 - visualization?
 - three letter ...
 - three letter ...
+- BIO
+
+### how to run?
+```
+python bin/tagger.py protein-test
+```
 
 ### References and Resources
 - Mallet: http://mallet.cs.umass.edu/

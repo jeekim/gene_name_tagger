@@ -11,19 +11,20 @@ class CorpusBuilder:
     def __init__(self):
         self.fb = features.FeatureBuilder()
 
-    def training(self):
-        gold = open('/home/jee/Projects/gene_name_tagger/data/protein-train.ann')
+    def training(self, filename):
+        ann = open('data/{}.ann'.format(filename))
 
         # build a dictionary for annotations
         d = {}
-        for l in gold.readlines():
+        for l in ann.readlines():
             k, v = l.split()[2:4]
             d[k] = int(v) - int(k)
 
-        f = open('/home/jee/Projects/gene_name_tagger/data/protein-train.txt')
+        f = open('data/{}.txt'.format(filename))
         lines = f.readlines()
         corpus = "".join(lines)
         spans = WordPunctTokenizer().span_tokenize(corpus)
+        train_corpus = ""
 
         gene_end = 0
         for span in spans:
@@ -31,47 +32,58 @@ class CorpusBuilder:
             tok = corpus[s:e]
             if d.get(str(s)):
                 gene_end = s + int(d.get(str(s)))
-                print(self.fb.generate(tok), "GENE")  # TODO: tokens?
+                # print(self.fb.generate(tok), "GENE")  # TODO: tokens?
+                train_corpus += '{} GENE\n'.format(self.fb.generate(tok))
             elif e <= gene_end:
-                print(self.fb.generate(tok), "GENE")
+                # print(self.fb.generate(tok), "GENE")
+                train_corpus += '{} GENE\n'.format(self.fb.generate(tok))
             else:
-                if tok is ".":
-                    print(tok, "O", "\n")
+                if tok == ".":
+                    # print(tok, "O", "\n")
+                    train_corpus += '{} O\n\n'.format(tok)
                 else:
-                    print(self.fb.generate(tok), "O")
+                    # print(self.fb.generate(tok), "O")
+                    train_corpus += '{} O\n'.format(self.fb.generate(tok))
 
-    def testing(self):
-        f = open('data/protein-test.txt')
+        o = open('data/{}.trn'.format(filename), 'w')
+        o.write(train_corpus)
+        return train_corpus
 
+    def testing(self, filename):
+        f = open('data/{}.txt'.format(filename))
         lines = f.readlines()
         corpus = "".join(lines)
         spans = WordPunctTokenizer().span_tokenize(corpus)
-        # spans = list(it)
-        # gene_end = 0
+        test_corpus = ""
+
         for span in spans:
             s, e = span  # span
             tok = corpus[s:e]
-            if tok is ".":
-                print(tok, "\n")
+            if tok is ".":  # TODO: better algorithm for sentence detection
+                # print(tok, "\n")
+                test_corpus += '{}\n\n'.format(tok)
             else:
-                print(self.fb.generate(tok))
+                # print(self.fb.generate(tok))
+                test_corpus += '{}\n'.format(self.fb.generate(tok))
 
+        o = open('data/{}.tst'.format(filename), 'w')
+        o.write(test_corpus)
 
+        return test_corpus
 
-    #def testing_with_offset(self):
-    #   pass
 
 def main():
-    if not len(sys.argv) == 2:
-        print('usage: program train|test')
+    if not len(sys.argv) == 3:
+        print('usage: program train|test file_basename')
         sys.exit()
 
     cb = CorpusBuilder()
+    filename = sys.argv[2]
 
     if sys.argv[1] == "train":
-        cb.training()
+        print(cb.training(filename)[:50])
     elif sys.argv[1] == "test":
-        cb.testing()
+        print(cb.testing(filename)[:50])
     else:
         print('option must be either train or test!')
         sys.exit()
@@ -79,6 +91,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # cb = CorpusBuilder()
-    # cb.training()
-    # cb.testing()
+
+#
