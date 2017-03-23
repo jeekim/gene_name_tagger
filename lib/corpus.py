@@ -1,7 +1,6 @@
 #import sys
 #import os
 # sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-
 from nltk.tokenize import WordPunctTokenizer
 from lib.features import FeatureBuilder
 
