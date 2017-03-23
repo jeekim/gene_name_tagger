@@ -13,10 +13,14 @@ def build(filename):
     # generate a training file for Mallet (file_basename.trn).
     cb.training(filename)
 
-    p = subprocess.Popen(['java', '-cp', 'lib/mallet.jar:lib/mallet-deps.jar', 'cc.mallet.fst.SimpleTagger', '--train', 'true',
-                          '--model-file', 'model/genecrf', '--iterations', '500', 'data/{}.trn'.format(filename)]
-                         , stdout=subprocess.PIPE)
-    p.stdout.close()
+    #p = subprocess.Popen(['java', '-cp', 'lib/mallet.jar:lib/mallet-deps.jar', 'cc.mallet.fst.SimpleTagger', '--train', 'true',
+     #                     '--model-file', 'model/genecrf', '--iterations', '500', 'data/{}.trn'.format(filename)]
+      #                   , stdout=subprocess.PIPE)
+    # p.stdout.close()
+
+    subprocess.run(
+        ['java', '-cp', 'lib/mallet.jar:lib/mallet-deps.jar', 'cc.mallet.fst.SimpleTagger', '--train', 'true',
+         '--model-file', 'model/genecrf', '--iterations', '500', 'data/{}.trn'.format(filename)])
 
 
 def train(filename):
@@ -25,11 +29,11 @@ def train(filename):
     # generate a training file for Mallet (file_basename.trn).
     cb.training(filename)
 
-    p = subprocess.Popen(
+    subprocess.run(
         ['java', '-cp', 'lib/mallet.jar:lib/mallet-deps.jar', 'cc.mallet.fst.SimpleTagger', '--train', 'true',
          '--test', 'perclass', '--iterations', '500', 'data/{}.trn'.format(filename)]
         , stdout=subprocess.PIPE)
-    p.stdout.close()
+    # p.stdout.close()
 
 
 def test(filename):
@@ -50,6 +54,7 @@ def test(filename):
                          , stdout=subprocess.PIPE)
     out = p.stdout
 
+    # producing annotations from CRF outputs.
     p_gene_s, p_gene_e = -1, -1
     p_name = {}
     t = 1

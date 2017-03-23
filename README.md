@@ -9,19 +9,20 @@
 git clone https://github.com/jeekim/gene_name_tagger.git
 pip install nltk
 python -m nltk.downloader
-- install 'punkt' in tab Models
-- close the GUI
+Downloader> d punkt
+Downloader> q
+
 cd gene_name_tagger
 ```
-- test
+- test: annotates protein-test.txt file.
 ```commandline
 python bin/tagger.py test protein-test
 ```
-- train
+- train: shows precision, recall, and f1-measures after training.
 ```commandline
 python bin/tagger.py train protein-train
 ```
-- build a model
+- build: generates a CRF model used for test.
 ```commandline
 python bin/tagger.py build protein-train
 ```
