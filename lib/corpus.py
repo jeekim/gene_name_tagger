@@ -1,15 +1,15 @@
-import sys
-import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+#import sys
+#import os
+# sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from nltk.tokenize import WordPunctTokenizer
-from lib.python import features
+from lib.features import FeatureBuilder
 
 
 class CorpusBuilder:
 
     def __init__(self):
-        self.fb = features.FeatureBuilder()
+        self.fb = FeatureBuilder()
 
     def training(self, filename):
         """ Generate a training file (file_basename.trn) in data/ directory. In the training set,

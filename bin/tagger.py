@@ -4,7 +4,7 @@ import subprocess
 from nltk.tokenize import WordPunctTokenizer
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
-from lib.python.corpus import CorpusBuilder
+from lib.corpus import CorpusBuilder
 
 
 def build(filename):
@@ -14,7 +14,7 @@ def build(filename):
     cb.training(filename)
 
     p = subprocess.Popen(['java', '-cp', 'lib/mallet.jar:lib/mallet-deps.jar', 'cc.mallet.fst.SimpleTagger', '--train', 'true',
-                          '--model-file', 'model/genecrf', '--iterations', '300', 'data/{}.trn'.format(filename)]
+                          '--model-file', 'model/genecrf', '--iterations', '500', 'data/{}.trn'.format(filename)]
                          , stdout=subprocess.PIPE)
     p.stdout.close()
 
@@ -27,7 +27,7 @@ def train(filename):
 
     p = subprocess.Popen(
         ['java', '-cp', 'lib/mallet.jar:lib/mallet-deps.jar', 'cc.mallet.fst.SimpleTagger', '--train', 'true',
-         '--test', 'perclass', '--iterations', '200', 'data/{}.trn'.format(filename)]
+         '--test', 'perclass', '--iterations', '500', 'data/{}.trn'.format(filename)]
         , stdout=subprocess.PIPE)
     p.stdout.close()
 
