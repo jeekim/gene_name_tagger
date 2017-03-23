@@ -18,7 +18,7 @@ def build(filename):
       #                   , stdout=subprocess.PIPE)
     # p.stdout.close()
 
-    subprocess.run(
+    subprocess.call(
         ['java', '-cp', 'lib/mallet.jar:lib/mallet-deps.jar', 'cc.mallet.fst.SimpleTagger', '--train', 'true',
          '--model-file', 'model/genecrf', '--iterations', '500', 'data/{}.trn'.format(filename)])
 
@@ -29,7 +29,7 @@ def train(filename):
     # generate a training file for Mallet (file_basename.trn).
     cb.training(filename)
 
-    subprocess.run(
+    subprocess.call(
         ['java', '-cp', 'lib/mallet.jar:lib/mallet-deps.jar', 'cc.mallet.fst.SimpleTagger', '--train', 'true',
          '--test', 'perclass', '--iterations', '500', 'data/{}.trn'.format(filename)]
         , stdout=subprocess.PIPE)
